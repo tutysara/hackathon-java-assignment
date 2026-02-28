@@ -43,13 +43,25 @@ public class WarehouseRepository implements WarehouseStore, PanacheRepository<Db
       .executeUpdate();
 
        */
-    getEntityManager().merge(warehouse);
+      DbWarehouse dbWarehouse = find("businessUnitCode", warehouse.businessUnitCode).firstResult();
+      UpdateEntityFromVO(warehouse, dbWarehouse);
+
+      getEntityManager().merge(dbWarehouse);
     // Clear persistence context to see updates in subsequent queries
     getEntityManager().flush();
     getEntityManager().clear();
   }
 
-  @Override
+    private static void UpdateEntityFromVO(Warehouse warehouse, DbWarehouse dbWarehouse) {
+        dbWarehouse.capacity = warehouse.capacity;
+        dbWarehouse.stock = warehouse.stock;
+        dbWarehouse.location = warehouse.location;
+
+        dbWarehouse.archivedAt = warehouse.archivedAt;
+        dbWarehouse.createdAt = warehouse.createdAt;
+    }
+
+    @Override
   public void remove(Warehouse warehouse) {
     // TODO Auto-generated method stub
     throw new UnsupportedOperationException("Unimplemented method 'remove'");

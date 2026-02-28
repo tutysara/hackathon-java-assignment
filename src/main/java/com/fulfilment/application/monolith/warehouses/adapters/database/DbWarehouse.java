@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
+
 import java.time.LocalDateTime;
 
 // adapter that doimain is driving
@@ -16,34 +17,48 @@ import java.time.LocalDateTime;
 @Cacheable
 public class DbWarehouse {
 
-  @Id @GeneratedValue public Long id;
-  
-  @Version
-  public Long version;
+    @Id
+    @GeneratedValue
+    public Long id;
 
-  @Column(unique = true, nullable = false)
-  public String businessUnitCode;
+    @Version
+    public Long version;
 
-  public String location;
+    @Column(unique = true, nullable = false)
+    public String businessUnitCode;
 
-  public Integer capacity;
+    public String location;
 
-  public Integer stock;
+    public Integer capacity;
 
-  public LocalDateTime createdAt;
+    public Integer stock;
 
-  public LocalDateTime archivedAt;
+    public LocalDateTime createdAt;
 
-  public DbWarehouse() {}
+    public LocalDateTime archivedAt;
 
-  public Warehouse toWarehouse() {
-    var warehouse = new Warehouse();
-    warehouse.businessUnitCode = this.businessUnitCode;
-    warehouse.location = this.location;
-    warehouse.capacity = this.capacity;
-    warehouse.stock = this.stock;
-    warehouse.createdAt = this.createdAt;
-    warehouse.archivedAt = this.archivedAt;
-    return warehouse;
-  }
+    public DbWarehouse() {
+    }
+
+    public Warehouse toWarehouse() {
+        var warehouse = new Warehouse();
+        warehouse.businessUnitCode = this.businessUnitCode;
+        warehouse.location = this.location;
+        warehouse.capacity = this.capacity;
+        warehouse.stock = this.stock;
+        warehouse.createdAt = this.createdAt;
+        warehouse.archivedAt = this.archivedAt;
+        return warehouse;
+    }
+
+    public static DbWarehouse fromWarehouse(Warehouse warehouse) {
+        var dbWarehouse = new DbWarehouse();
+        dbWarehouse.businessUnitCode = warehouse.businessUnitCode;
+        dbWarehouse.location = warehouse.location;
+        dbWarehouse.capacity = warehouse.capacity;
+        dbWarehouse.stock = warehouse.stock;
+        dbWarehouse.createdAt = warehouse.createdAt;
+        dbWarehouse.archivedAt = warehouse.archivedAt;
+        return dbWarehouse;
+    }
 }
