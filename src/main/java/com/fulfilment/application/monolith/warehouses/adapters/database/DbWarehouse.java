@@ -10,6 +10,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 import java.time.LocalDateTime;
 
+// adapter that doimain is driving
 @Entity
 @Table(name = "warehouse")
 @Cacheable

@@ -4,6 +4,7 @@ import com.fulfilment.application.monolith.warehouses.domain.models.Warehouse;
 import com.fulfilment.application.monolith.warehouses.domain.ports.WarehouseStore;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
+
 import java.util.List;
 
 // driven adapter
@@ -30,6 +31,7 @@ public class WarehouseRepository implements WarehouseStore, PanacheRepository<Db
 
   @Override
   public void update(Warehouse warehouse) {
+      /*
     getEntityManager().createQuery(
       "UPDATE DbWarehouse w SET w.location = :loc, w.capacity = :cap, " +
       "w.stock = :stock, w.archivedAt = :archived WHERE w.businessUnitCode = :code")
@@ -40,6 +42,8 @@ public class WarehouseRepository implements WarehouseStore, PanacheRepository<Db
       .setParameter("code", warehouse.businessUnitCode)
       .executeUpdate();
 
+       */
+    getEntityManager().merge(warehouse);
     // Clear persistence context to see updates in subsequent queries
     getEntityManager().flush();
     getEntityManager().clear();
