@@ -31,18 +31,7 @@ public class WarehouseRepository implements WarehouseStore, PanacheRepository<Db
 
   @Override
   public void update(Warehouse warehouse) {
-      /*
-    getEntityManager().createQuery(
-      "UPDATE DbWarehouse w SET w.location = :loc, w.capacity = :cap, " +
-      "w.stock = :stock, w.archivedAt = :archived WHERE w.businessUnitCode = :code")
-      .setParameter("loc", warehouse.location)
-      .setParameter("cap", warehouse.capacity)
-      .setParameter("stock", warehouse.stock)
-      .setParameter("archived", warehouse.archivedAt)
-      .setParameter("code", warehouse.businessUnitCode)
-      .executeUpdate();
 
-       */
       DbWarehouse dbWarehouse = find("businessUnitCode", warehouse.businessUnitCode).firstResult();
       UpdateEntityFromVO(warehouse, dbWarehouse);
 
