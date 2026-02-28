@@ -92,12 +92,59 @@ The Warehouse API is defined in an OpenAPI YAML file from which code is generate
 
 What are the pros and cons of each approach? Which would you choose and why?
 
+    I see Store and Product are implemented in StoreResource and ProductResource respectively.
+	While WarehouseResourceImpl implements WarehouseResource which is generated from yaml.
+	StoreResource and ProductResource is the traditional approach that I had followed in many projects so, looks more familiar.
+	It is easy while doing prototying and during times when the details are not flushed out and the requirements are changing.
+
+	Some disadvantages which I observed are listed here
+	- We cannot clearly separate the concerns
+	  Example: If UI team wants to work parallelly on the UI features, they have to depend on backend.
+	  With no spec for API's they have to rely on running a devserver to test UI features.
+	  Mocking is hard and if the backend API changes without notice all the mocks becomes irrelevant.
+	- Difficulty collobrating with other teams
+		Example: If another team depends on our code, they can't be sure if any spec is broken.
+		So, they end up testing their code as well after our code deployment.
+		This creates many implicit dependency between team instead of just relying on the interface that is the API spec.
+	- If Swagger API is not generated then they have to look at the code to see the endpoints that are exposed/changed and rely on our 
+        documentation in ticketing system or Jira to get the details.
+	- The method names are not uniform and they have different coding styles after sometime and they becomes hard to maintain.
+
+
+	OpenAPI first has lots of advantages like
+		- Less code to maintain since code is generated
+		- It is easy to communicate between different teams and different sections within same teams like backend vs UI etc
+		- Design has to be thought beforehand so, it could be more refined
+		- It forces everyone to align and stablize on a requirement before proceeding so, changed down the line can be minimized
+	There are few disadvantages I see as well
+		- Not sure if the yaml file is more readable for many and making change is difficult in huge yaml file.
+		- It is slow for rapid development and in the initial phase of projects when requirements are changing.
+		- Can be difficult for people coming from traditional way.
+    
+    I will choose OpenAPI first approach for new projects where requirements are sufficiently clear and when there are multiple teams or 
+    stakeholders are invloved.
+
 **Question 2: Testing Strategy**
 
 Given time and resource constraints, how would you prioritize tests for this project?
 
 Which types of tests (unit, integration, parameterized, concurrency) would you focus on, and how would you ensure effective coverage over time?
+With Testing We have to make sure our code performs correctly
 
+    When we have resource constraints, at a minimum we have to make sure if are meeting all business use cases correctly
+    To achieve this
+        - We can write sufficient number of unit test cases to cover like 70 to 80% code
+        - Concentrate on Integration tests since we have to test the system as a whole to find
+            - Concurrency bugs where many entities are interacing with same data.
+            - Bugs involving maintaining state invariants across different components.
+                Example: Even in our testing there are was a failing integration test due to concurrency issue 
+                with event propogation and db transaction which threw an exception and got rolledback.
+
+        - To speed up unit test writing we can write a parameterized test and fill the table with 
+          different values for data and can cover all edge cases quickly.
+        - We can also use tools like OpenAPI and generate code instead of writing them manually 
+          to avoid errors even before they occur.
+        - Finally write tests based on scenarios in requirement and don't try to cover all implementation details.
 ---
 
 ### Bonus Task: Warehouse Search & Filter API
