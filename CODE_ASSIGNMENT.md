@@ -129,8 +129,8 @@ What are the pros and cons of each approach? Which would you choose and why?
 Given time and resource constraints, how would you prioritize tests for this project?
 
 Which types of tests (unit, integration, parameterized, concurrency) would you focus on, and how would you ensure effective coverage over time?
-With Testing We have to make sure our code performs correctly
 
+    With Testing We have to make sure our code performs correctly
     When we have resource constraints, at a minimum we have to make sure if are meeting all business use cases correctly
     To achieve this
         - We can write sufficient number of unit test cases to cover like 70 to 80% code
