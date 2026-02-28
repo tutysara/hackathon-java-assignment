@@ -51,18 +51,22 @@ public class StoreResource {
     return entity;
   }
 
+
   @POST
-  @Transactional
   public Response create(Store store) {
     if (store.id != null) {
       throw new WebApplicationException("Id was invalidly set on request.", 422);
     }
 
-    store.persist();
+    persist(store); // transaction is complete at this point
     storeCreatedEvent.fireAsync(new StoreCreatedEvent(store));
-
     return Response.ok(store).status(201).build();
   }
+
+    @Transactional
+    public void persist(Store store) {
+        store.persist();
+    }
 
   @PUT
   @Path("{id}")
