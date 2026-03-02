@@ -1,19 +1,14 @@
 package com.fulfilment.application.monolith.warehouses.adapters.database;
 
 import com.fulfilment.application.monolith.warehouses.domain.models.Warehouse;
-import jakarta.persistence.Cacheable;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.Version;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
 // adapter that doimain is driving
 @Entity
-@Table(name = "warehouse")
+@Table(name = "warehouse"
+)
 @Cacheable
 public class DbWarehouse {
 
