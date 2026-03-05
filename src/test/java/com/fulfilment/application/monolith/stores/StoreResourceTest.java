@@ -76,13 +76,11 @@ public class StoreResourceTest {
 
     @Test
     public void testGetAllStores() {
-        Store s1 = new Store();
-        s1.name = "A";
+        Store s1 = new Store("A");
         s1.quantityProductsInStock = 10;
         createStore(s1);
 
-        Store s2 = new Store();
-        s2.name = "B";
+        Store s2 = new Store("B");
         s2.quantityProductsInStock = 20;
         createStore(s2);
 
