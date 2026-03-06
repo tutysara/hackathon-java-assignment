@@ -302,6 +302,25 @@ public class StoreResourceTest {
     }
 
     @Test
+    @DisplayName("ErrorMapper: PATCH /store/{id} returns correct error structure on 404")
+    void errorMapper_patch_404_hasCorrectStructure_quantity() {
+        given()
+                .contentType(ContentType.JSON)
+                .body("""
+                { 
+                  "name": "Updated",
+                  "quantityProductsInStock": 100
+                }
+                """)
+                .when().patch("/store/99999")
+                .then()
+                .statusCode(404)
+                .body("code", is(404))
+                .body("exceptionType", is("jakarta.ws.rs.WebApplicationException"))
+                .body("error", containsString("99999"));
+    }
+
+    @Test
     @DisplayName("ErrorMapper: PATCH /store/{id} returns error when store name is null")
     void errorMapper_patch_422_hasCorrectStructure() {
         // 422 — same assertion for different code
