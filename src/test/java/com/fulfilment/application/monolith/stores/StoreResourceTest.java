@@ -197,7 +197,6 @@ public class StoreResourceTest {
                 .statusCode(200)
                 .body("name", is("PatchNew"));
     }
-
     // ---------------------------
     // DELETE
     // ---------------------------
@@ -294,7 +293,7 @@ public class StoreResourceTest {
                 .body("""
                 { "name": "Updated Store" }
                 """)
-                .when().put("/store/99999")
+                .when().patch("/store/99999")
                 .then()
                 .statusCode(404)
                 .body("code", is(404))
