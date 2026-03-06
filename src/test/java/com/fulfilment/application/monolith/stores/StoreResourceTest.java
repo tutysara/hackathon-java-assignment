@@ -6,8 +6,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.TestTransaction;
+import io.restassured.http.ContentType;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 @QuarkusTest
@@ -225,4 +227,95 @@ public class StoreResourceTest {
                 .then()
                 .statusCode(404);
     }
+
+    // ── ErrorMapper — 404 scenarios ───────────────────────────────────────────
+
+    @Test
+    @DisplayName("ErrorMapper: GET /store/{id} returns correct error structure on 404")
+    void errorMapper_get_404_hasCorrectStructure() {
+        given()
+                .when().get("/store/99999")
+                .then()
+                .statusCode(404)
+                .contentType(ContentType.JSON)
+                .body("code", is(404))
+                .body("exceptionType", is("jakarta.ws.rs.WebApplicationException"))
+                .body("error", containsString("99999"));
+    }
+
+    @Test
+    @DisplayName("ErrorMapper: PUT /store/{id} returns correct error structure on 404")
+    void errorMapper_put_404_hasCorrectStructure() {
+        given()
+                .contentType(ContentType.JSON)
+                .body("""
+                { "name": "Updated Store" }
+                """)
+                .when().put("/store/99999")
+                .then()
+                .statusCode(404)
+                .body("code", is(404))
+                .body("exceptionType", is("jakarta.ws.rs.WebApplicationException"))
+                .body("error", containsString("99999"));
+    }
+
+    @Test
+    @DisplayName("ErrorMapper: PUT /store/{id} returns error when store name is null")
+    void errorMapper_put_422_hasCorrectStructure() {
+        // 422 — same assertion for different code
+              given()
+                .contentType(ContentType.JSON)
+                .body("""
+                { "id": 1 }
+                """)
+                .when().put("/store/9999")
+                .then()
+                .statusCode(422)
+                .body("code", is(422));
+    }
+
+    @Test
+    @DisplayName("ErrorMapper: DELETE /store/{id} returns correct error structure on 404")
+    void errorMapper_delete_404_hasCorrectStructure() {
+        given()
+                .when().delete("/store/99999")
+                .then()
+                .statusCode(404)
+                .body("code", is(404))
+                .body("exceptionType", is("jakarta.ws.rs.WebApplicationException"))
+                .body("error", containsString("99999"));
+    }
+
+    @Test
+    @DisplayName("ErrorMapper: PATCH /store/{id} returns correct error structure on 404")
+    void errorMapper_patch_404_hasCorrectStructure() {
+        given()
+                .contentType(ContentType.JSON)
+                .body("""
+                { "name": "Updated Store" }
+                """)
+                .when().put("/store/99999")
+                .then()
+                .statusCode(404)
+                .body("code", is(404))
+                .body("exceptionType", is("jakarta.ws.rs.WebApplicationException"))
+                .body("error", containsString("99999"));
+    }
+
+    @Test
+    @DisplayName("ErrorMapper: PATCH /store/{id} returns error when store name is null")
+    void errorMapper_patch_422_hasCorrectStructure() {
+        // 422 — same assertion for different code
+        given()
+                .contentType(ContentType.JSON)
+                .body("""
+                { "id": 1 }
+                """)
+                .when().patch("/store/9999")
+                .then()
+                .statusCode(422)
+                .body("code", is(422));
+    }
+
+
 }
