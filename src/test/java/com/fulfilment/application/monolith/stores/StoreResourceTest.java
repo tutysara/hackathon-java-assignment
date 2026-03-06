@@ -317,5 +317,4 @@ public class StoreResourceTest {
                 .body("code", is(422));
     }
 
-
 }

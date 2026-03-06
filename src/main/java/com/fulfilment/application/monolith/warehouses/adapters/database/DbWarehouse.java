@@ -45,15 +45,4 @@ public class DbWarehouse {
         warehouse.archivedAt = this.archivedAt;
         return warehouse;
     }
-
-    public static DbWarehouse fromWarehouse(Warehouse warehouse) {
-        var dbWarehouse = new DbWarehouse();
-        dbWarehouse.businessUnitCode = warehouse.businessUnitCode;
-        dbWarehouse.location = warehouse.location;
-        dbWarehouse.capacity = warehouse.capacity;
-        dbWarehouse.stock = warehouse.stock;
-        dbWarehouse.createdAt = warehouse.createdAt;
-        dbWarehouse.archivedAt = warehouse.archivedAt;
-        return dbWarehouse;
-    }
 }
